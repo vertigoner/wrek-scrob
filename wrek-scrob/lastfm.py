@@ -8,6 +8,8 @@ import time
 import six
 import pickle
 
+from track import *
+
 class lastfm():
 
 
@@ -15,6 +17,10 @@ class lastfm():
 
         self.apiKey = os.environ.get('LastApiKey')
         self.secret = os.environ.get('LastSecret')
+
+        if self.apiKey == "<YOUR API KEY>" or self.secret == "<YOUR SECRET>":
+            print('Please set your API Key and secret (obtained from last.fm) in config/env.py')
+            sys.exit()
 
         try:
             pCont = pickle.load(open('vars/save.p', 'rb'))
@@ -24,10 +30,6 @@ class lastfm():
             self.username, self.sessionKey = self.authenticate()
             pCont = {'LastUser':self.username, 'LastSessionKey':self.sessionKey}
             pickle.dump(pCont, open('vars/save.p', 'wb'))
-
-        if self.apiKey == "<YOUR API KEY>" or self.secret == "<YOUR SECRET>":
-            print('Please set your API Key and secret (obtained from last.fm) in config/env.py')
-            sys.exit()
 
 
     def authenticate(self):
@@ -69,9 +71,6 @@ class lastfm():
         username = response['session']['name']
         sessionKey = response['session']['key']
 
-        print('username: ' + username)
-        print('sk: ' + sessionKey)
-
         return username, sessionKey
 
 
@@ -97,15 +96,24 @@ class lastfm():
             print("Response status code: " + str(response.status_code))
 
 
-    def scrobble(self, artist, track):
+    def scrobble(self, track, artist = None):
 
         timestamp = str(int(time.time()))
-        payload = {'method':'track.scrobble',
-                   'artist':artist,
-                   'track':track,
-                   'timestamp':timestamp,
-                   'api_key':self.apiKey,
-                   'sk':self.sessionKey}
+        if artist is not None:
+            payload = {'method':'track.scrobble',
+                       'artist':artist,
+                       'track':track,
+                       'timestamp':timestamp,
+                       'api_key':self.apiKey,
+                       'sk':self.sessionKey}
+        else:
+            payload = {'method':'track.scrobble',
+                       'artist':track.getArtist(),
+                       'track':track.getTitle(),
+                       'album':track.getAlbum(),
+                       'timestamp':timestamp,
+                       'api_key':self.apiKey,
+                       'sk':self.sessionKey}
 
         payload['api_sig'] = self.genApiSig(payload)
         payload['format'] = 'json'
@@ -119,7 +127,6 @@ class lastfm():
                 print('     Error ' + str(response['error']) + ': ' + response['message'])
         else:
             print("Response status code: " + str(response.status_code))
-        
 
 
     def getArtistInfo(self, artist):

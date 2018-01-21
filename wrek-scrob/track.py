@@ -10,26 +10,26 @@ class track():
 		self.title = title
 
 
-	def getArtist():
+	def getArtist(self):
 
-		return artist
+		return self.artist
 
-	def getAlbum():
+	def getAlbum(self):
 
-		return album
+		return self.album
 
-	def getTitle():
+	def getTitle(self):
 
-		return title
+		return self.title
 
-	def setArtist(artist):
+	def setArtist(self, artist):
 
 		self.artist = artist
 
-	def setAlbum(album):
+	def setAlbum(self, album):
 
 		self.album = album
 
-	def setTitle(title):
+	def setTitle(self, title):
 
 		self.title = title
