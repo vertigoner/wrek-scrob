@@ -3,4 +3,4 @@
 *.p
 
 .DS_Store
-config.py
+env.py

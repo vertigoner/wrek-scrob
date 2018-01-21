@@ -74,11 +74,19 @@ class lastfm():
         return username, sessionKey
 
 
-    def updateNowPlaying(self, artist, track):
+    def updateNowPlaying(self, track, artist = None):
 
-        payload = {'method':'track.updateNowPlaying',
-                   'artist':artist,
-                   'track':track,
+        if artist is not None:
+            payload = {'method':'track.updateNowPlaying',
+                       'artist':artist,
+                       'track':track,
+                       'api_key':self.apiKey,
+                       'sk':self.sessionKey}
+        else:
+            payload = {'method':'track.updateNowPlaying',
+                   'artist':track.getArtist(),
+                   'track':track.getTitle(),
+                   'album':track.getAlbum(),
                    'api_key':self.apiKey,
                    'sk':self.sessionKey}
 

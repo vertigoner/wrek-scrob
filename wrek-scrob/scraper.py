@@ -17,6 +17,5 @@ def scrape():
 
 	for i, e in enumerate(trackInfo):
 		trackInfo[i] = e.text.strip().encode('ascii');
-	print trackInfo
 
 	return track(trackInfo[1], trackInfo[2], trackInfo[0])

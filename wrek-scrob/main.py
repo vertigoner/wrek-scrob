@@ -1,5 +1,6 @@
 import sys
 import os
+import time
 
 sys.path.append(os.path.abspath('./../config'))
 
@@ -8,18 +9,25 @@ from lastfm import *
 from scraper import *
 from track import *
 
+
+def scrapeAndScrob(lfm, currTrack):
+	newTrack = scrape()
+	if currTrack is None:
+		lfm.updateNowPlaying(newTrack)
+		return newTrack
+	elif newTrack.getTitle() != currTrack.getTitle():
+		lfm.scrobble(currTrack)
+		lfm.updateNowPlaying(newTrack)
+		return newTrack
+	else:
+		return currTrack
+
+
 if __name__ == '__main__':
    
-    # lfm = lastfm()
-
-    # lfm.scrobble(sys.argv[1], sys.argv[2])
-
-    # artistInfo = lfm.getArtistInfo(sys.argv[1])
-    # print()
-    # print('Name: ' + artistInfo['name'])
-    # print('Listeners: ' + artistInfo['listeners'])
-    # print('Play Count: ' + artistInfo['playcount'])
-    # print('Bio: ' + artistInfo['bio'])
-    currTrack = scrape()
     lfm = lastfm()
-    lfm.scrobble(currTrack)
+    currTrack = None
+
+    while True:
+    	currTrack = scrapeAndScrob(lfm, currTrack)
+    	time.sleep(30)
