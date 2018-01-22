@@ -20,7 +20,7 @@ class track():
 
 
 	def hasBeenScrobbled(self):
-		return scrobbled
+		return self.scrobbled
 
 	def getArtist(self):
 
@@ -52,4 +52,3 @@ class track():
 	def __eq__(self, other): 
 		return self.artist == other.artist and self.album == self.album and self.title == self.title
 
-		

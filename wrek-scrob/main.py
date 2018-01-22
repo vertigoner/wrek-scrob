@@ -16,12 +16,14 @@ def scrapeAndScrob(lfm, currTrack):
 	# base case
 	if currTrack is None:
 		lfm.updateNowPlaying(newTrack)
+		print 'Updated now playing: ' + newTrack.getArtist() + ' - ' + newTrack.getTitle()
 		return newTrack
 
 	# if track is old (invalid) -> scrobble and stop updating now playing
 	elif not currTrack.validateTime():
 		if not currTrack.hasBeenScrobbled():
 			lfm.scrobble(currTrack)
+			print 'Scrobbled track: ' + currTrack.getArtist() + ' - ' + currTrack.getTitle()
 			currTrack.setScrobbled(True)
 		return currTrack
 
@@ -29,12 +31,14 @@ def scrapeAndScrob(lfm, currTrack):
 	elif not newTrack == currTrack:
 		lfm.scrobble(currTrack) # don't need to update currTrack.scrobbled since instance stops here
 		lfm.updateNowPlaying(newTrack)
-		print 'Got new track: ' + newTrack.getArtist() + ' - ' + newTrack.getTitle()
+		print 'Scrobbled track: ' + currTrack.getArtist() + ' - ' + currTrack.getTitle()
+		print 'Updated now playing: ' + newTrack.getArtist() + ' - ' + newTrack.getTitle()
 		return newTrack
 
 	# same track as old track (and valid) -> update now playing
 	else:
 		lfm.updateNowPlaying(currTrack)
+		print 'Updated now playing: ' + newTrack.getArtist() + ' - ' + newTrack.getTitle()
 		return currTrack
 
 
@@ -44,7 +48,10 @@ if __name__ == '__main__':
     currTrack = None
     currValid = False
 
+    print 'Starting wrek scrobbler...'
+
     while True:
     	currTrack = scrapeAndScrob(lfm, currTrack)
+    	print 'Waiting...'
     	time.sleep(30)
 
