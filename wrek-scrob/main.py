@@ -25,6 +25,7 @@ def scrapeAndScrob(lfm, currTrack):
 			lfm.scrobble(currTrack)
 			print 'Scrobbled track: ' + currTrack.getArtist() + ' - ' + currTrack.getTitle()
 			currTrack.setScrobbled(True)
+		print 'No current track scrobbled.'
 		return currTrack
 
 	# new track scraped -> scrobble old track and update now playing
@@ -52,6 +53,5 @@ if __name__ == '__main__':
 
     while True:
     	currTrack = scrapeAndScrob(lfm, currTrack)
-    	print 'Waiting...'
     	time.sleep(30)
 
