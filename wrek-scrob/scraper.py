@@ -1,5 +1,6 @@
 from track import *
 from bs4 import BeautifulSoup
+from datetime import datetime, timedelta
 import requests
 
 # An ugly and very simple web scraper. Used to get the most recent track
@@ -13,9 +14,12 @@ def scrape():
 	# row = soup.find_all('td')[1:4]
 	table = soup.find('table', attrs = {'id': 'playlist'})
 	row = table.find_all('tr')[0]
-	trackInfo = table.find_all('td')[1:4]
+	trackInfo = table.find_all('td')[0:4]
 
 	for i, e in enumerate(trackInfo):
 		trackInfo[i] = e.text.strip().encode('ascii');
 
-	return track(trackInfo[1], trackInfo[2], trackInfo[0])
+	now = datetime.now()
+	timestamp = datetime.strptime(now.strftime('%Y-%m-%d') + ' ' + trackInfo[0], '%Y-%m-%d %I:%M %p')
+	
+	return track(trackInfo[2], trackInfo[3], trackInfo[1], timestamp)
