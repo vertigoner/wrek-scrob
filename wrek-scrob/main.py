@@ -35,6 +35,11 @@ def job():
 	global currTrack
 	newTrack = scrape()
 
+	# date change handling
+	if newTrack is None:
+		print 'No current track scraped.'
+		currTrack = newTrack
+
 	# if track is old (invalid) -> scrobble and stop updating now playing
 	if not newTrack.validateTime():
 		if not currTrack.hasBeenScrobbled():

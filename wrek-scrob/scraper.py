@@ -19,6 +19,9 @@ def scrape():
 	for i, e in enumerate(trackInfo):
 		trackInfo[i] = e.text.strip().encode('ascii');
 
+	if trackInfo[0] == "Sorry, nothing for this day!":
+		return None
+
 	now = datetime.now()
 	timestamp = datetime.strptime(now.strftime('%Y-%m-%d') + ' ' + trackInfo[0], '%Y-%m-%d %I:%M %p')
 	
