@@ -28,6 +28,8 @@ def initialize():
 		print 'init: Updated now playing: ' + newTrack.getArtist() + ' - ' + newTrack.getTitle()
 		currTrack = newTrack
 	else:
+                currTrack = newTrack
+                currTrack.setScrobbled(True)
 		print 'init: No current track scraped.'
 
 
@@ -41,7 +43,7 @@ def job():
 		currTrack = newTrack
 
 	# if track is old (invalid) -> scrobble and stop updating now playing
-	if not newTrack.validateTime():
+	elif not newTrack.validateTime():
 		if not currTrack.hasBeenScrobbled():
 			lfm.scrobble(currTrack)
 			print 'Scrobbled track: ' + currTrack.getArtist() + ' - ' + currTrack.getTitle()
@@ -52,13 +54,15 @@ def job():
 	elif not newTrack == currTrack:
 		if currTrack.validateTime():
 			lfm.scrobble(currTrack) # don't need to update currTrack.scrobbled since instance stops here
+			print 'Scrobbled track: ' + currTrack.getArtist() + ' - ' + currTrack.getTitle()
 		lfm.updateNowPlaying(newTrack)
-		print 'Scrobbled track: ' + currTrack.getArtist() + ' - ' + currTrack.getTitle()
+		currTrack = newTrack
 		print 'Updated now playing: ' + newTrack.getArtist() + ' - ' + newTrack.getTitle()
 
-	# same track as old (valid) track -> do nothing
+	# same track as old (valid) track -> update now playing
 	else:
-		return
+		lfm.updateNowPlaying(currTrack)
+		print 'Updated now playing: ' + currTrack.getArtist() + ' - ' + currTrack.getTitle()
 
 
 if __name__ == '__main__':

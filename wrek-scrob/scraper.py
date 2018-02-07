@@ -13,6 +13,8 @@ def scrape():
 	soup = BeautifulSoup(html, 'html.parser')
 	# row = soup.find_all('td')[1:4]
 	table = soup.find('table', attrs = {'id': 'playlist'})
+	if table is None:
+                return None
 	row = table.find_all('tr')[0]
 	trackInfo = table.find_all('td')[0:4]
 
