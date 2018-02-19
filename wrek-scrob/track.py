@@ -49,6 +49,8 @@ class track():
 
 		self.title = title
 
-	def __eq__(self, other): 
+	def __eq__(self, other):
+                if other is None:
+                        return False
 		return self.artist == other.artist and self.album == self.album and self.title == self.title
 

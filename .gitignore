@@ -1,6 +1,7 @@
 *.pyc
 *.pyo
 *.p
+*.log
 
 .DS_Store
 env.py
